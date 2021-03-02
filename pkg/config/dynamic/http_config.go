@@ -200,7 +200,7 @@ func (h *HealthCheck) SetDefaults() {
 	h.FollowRedirects = &fr
 }
 
-// CertVerifier Wrapper for the certificate validation callback.
+// CertVerifier is a wrapper for the certificate validation callback.
 type CertVerifier interface {
 	VerifyPeerCertificate(cfg *gtls.Config, rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error
 }
