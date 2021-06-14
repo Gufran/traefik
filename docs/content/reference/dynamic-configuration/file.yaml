@@ -177,7 +177,6 @@ http:
         accessControlAllowMethods:
         - foobar
         - foobar
-        accessControlAllowOrigin: foobar
         accessControlAllowOriginList:
         - foobar
         - foobar
@@ -351,6 +350,9 @@ tcp:
       entryPoints:
       - foobar
       - foobar
+      middlewares:
+      - foobar
+      - foobar
       service: foobar
       rule: foobar
       tls:
@@ -370,6 +372,9 @@ tcp:
       entryPoints:
       - foobar
       - foobar
+      middlewares:
+      - foobar
+      - foobar
       service: foobar
       rule: foobar
       tls:
@@ -385,6 +390,12 @@ tcp:
           sans:
           - foobar
           - foobar
+  middlewares:
+    Middleware00:
+      ipWhiteList:
+        sourceRange:
+        - foobar
+        - foobar
   services:
     TCPService01:
       loadBalancer:

@@ -47,7 +47,6 @@ func TestDecodeConfiguration(t *testing.T) {
 		"traefik.http.middlewares.Middleware8.headers.allowedhosts":                                "foobar, fiibar",
 		"traefik.http.middlewares.Middleware8.headers.accesscontrolallowheaders":                   "X-foobar, X-fiibar",
 		"traefik.http.middlewares.Middleware8.headers.accesscontrolallowmethods":                   "GET, PUT",
-		"traefik.http.middlewares.Middleware8.headers.accesscontrolalloworigin":                    "foobar",
 		"traefik.http.middlewares.Middleware8.headers.accesscontrolalloworiginList":                "foobar, fiibar",
 		"traefik.http.middlewares.Middleware8.headers.accesscontrolalloworiginListRegex":           "foobar, fiibar",
 		"traefik.http.middlewares.Middleware8.headers.accesscontrolexposeheaders":                  "X-foobar, X-fiibar",
@@ -170,22 +169,24 @@ func TestDecodeConfiguration(t *testing.T) {
 		"traefik.http.services.Service1.loadbalancer.server.port":                      "8080",
 		"traefik.http.services.Service1.loadbalancer.sticky":                           "false",
 		"traefik.http.services.Service1.loadbalancer.sticky.cookie.name":               "fui",
-		"traefik.tcp.routers.Router0.rule":                                             "foobar",
-		"traefik.tcp.routers.Router0.entrypoints":                                      "foobar, fiibar",
-		"traefik.tcp.routers.Router0.service":                                          "foobar",
-		"traefik.tcp.routers.Router0.tls.passthrough":                                  "false",
-		"traefik.tcp.routers.Router0.tls.options":                                      "foo",
-		"traefik.tcp.routers.Router1.rule":                                             "foobar",
-		"traefik.tcp.routers.Router1.entrypoints":                                      "foobar, fiibar",
-		"traefik.tcp.routers.Router1.service":                                          "foobar",
-		"traefik.tcp.routers.Router1.tls.options":                                      "foo",
-		"traefik.tcp.routers.Router1.tls.passthrough":                                  "false",
-		"traefik.tcp.services.Service0.loadbalancer.server.Port":                       "42",
-		"traefik.tcp.services.Service0.loadbalancer.TerminationDelay":                  "42",
-		"traefik.tcp.services.Service0.loadbalancer.proxyProtocol.version":             "42",
-		"traefik.tcp.services.Service1.loadbalancer.server.Port":                       "42",
-		"traefik.tcp.services.Service1.loadbalancer.TerminationDelay":                  "42",
-		"traefik.tcp.services.Service1.loadbalancer.proxyProtocol":                     "true",
+
+		"traefik.tcp.middlewares.Middleware0.ipwhitelist.sourcerange":      "foobar, fiibar",
+		"traefik.tcp.routers.Router0.rule":                                 "foobar",
+		"traefik.tcp.routers.Router0.entrypoints":                          "foobar, fiibar",
+		"traefik.tcp.routers.Router0.service":                              "foobar",
+		"traefik.tcp.routers.Router0.tls.passthrough":                      "false",
+		"traefik.tcp.routers.Router0.tls.options":                          "foo",
+		"traefik.tcp.routers.Router1.rule":                                 "foobar",
+		"traefik.tcp.routers.Router1.entrypoints":                          "foobar, fiibar",
+		"traefik.tcp.routers.Router1.service":                              "foobar",
+		"traefik.tcp.routers.Router1.tls.options":                          "foo",
+		"traefik.tcp.routers.Router1.tls.passthrough":                      "false",
+		"traefik.tcp.services.Service0.loadbalancer.server.Port":           "42",
+		"traefik.tcp.services.Service0.loadbalancer.TerminationDelay":      "42",
+		"traefik.tcp.services.Service0.loadbalancer.proxyProtocol.version": "42",
+		"traefik.tcp.services.Service1.loadbalancer.server.Port":           "42",
+		"traefik.tcp.services.Service1.loadbalancer.TerminationDelay":      "42",
+		"traefik.tcp.services.Service1.loadbalancer.proxyProtocol":         "true",
 
 		"traefik.udp.routers.Router0.entrypoints":                "foobar, fiibar",
 		"traefik.udp.routers.Router0.service":                    "foobar",
@@ -223,6 +224,13 @@ func TestDecodeConfiguration(t *testing.T) {
 					TLS: &dynamic.RouterTCPTLSConfig{
 						Passthrough: false,
 						Options:     "foo",
+					},
+				},
+			},
+			Middlewares: map[string]*dynamic.TCPMiddleware{
+				"Middleware0": {
+					IPWhiteList: &dynamic.TCPIPWhiteList{
+						SourceRange: []string{"foobar", "fiibar"},
 					},
 				},
 			},
@@ -529,7 +537,6 @@ func TestDecodeConfiguration(t *testing.T) {
 							"GET",
 							"PUT",
 						},
-						AccessControlAllowOrigin: "foobar",
 						AccessControlAllowOriginList: []string{
 							"foobar",
 							"fiibar",
@@ -696,6 +703,13 @@ func TestEncodeConfiguration(t *testing.T) {
 					TLS: &dynamic.RouterTCPTLSConfig{
 						Passthrough: false,
 						Options:     "foo",
+					},
+				},
+			},
+			Middlewares: map[string]*dynamic.TCPMiddleware{
+				"Middleware0": {
+					IPWhiteList: &dynamic.TCPIPWhiteList{
+						SourceRange: []string{"foobar", "fiibar"},
 					},
 				},
 			},
@@ -1007,7 +1021,6 @@ func TestEncodeConfiguration(t *testing.T) {
 							"GET",
 							"PUT",
 						},
-						AccessControlAllowOrigin: "foobar",
 						AccessControlAllowOriginList: []string{
 							"foobar",
 							"fiibar",
@@ -1170,7 +1183,6 @@ func TestEncodeConfiguration(t *testing.T) {
 		"traefik.HTTP.Middlewares.Middleware8.Headers.AccessControlAllowCredentials":               "true",
 		"traefik.HTTP.Middlewares.Middleware8.Headers.AccessControlAllowHeaders":                   "X-foobar, X-fiibar",
 		"traefik.HTTP.Middlewares.Middleware8.Headers.AccessControlAllowMethods":                   "GET, PUT",
-		"traefik.HTTP.Middlewares.Middleware8.Headers.AccessControlAllowOrigin":                    "foobar",
 		"traefik.HTTP.Middlewares.Middleware8.Headers.AccessControlAllowOriginList":                "foobar, fiibar",
 		"traefik.HTTP.Middlewares.Middleware8.Headers.AccessControlAllowOriginListRegex":           "foobar, fiibar",
 		"traefik.HTTP.Middlewares.Middleware8.Headers.AccessControlExposeHeaders":                  "X-foobar, X-fiibar",
@@ -1294,6 +1306,7 @@ func TestEncodeConfiguration(t *testing.T) {
 		"traefik.HTTP.Services.Service1.LoadBalancer.server.Scheme":                    "foobar",
 		"traefik.HTTP.Services.Service0.LoadBalancer.HealthCheck.Headers.name0":        "foobar",
 
+		"traefik.TCP.Middlewares.Middleware0.IPWhiteList.SourceRange": "foobar, fiibar",
 		"traefik.TCP.Routers.Router0.Rule":                            "foobar",
 		"traefik.TCP.Routers.Router0.EntryPoints":                     "foobar, fiibar",
 		"traefik.TCP.Routers.Router0.Service":                         "foobar",
